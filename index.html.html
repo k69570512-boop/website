@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday ✨</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --bg:#050816;
+      --card:rgba(255,255,255,0.08);
+      --text:#ffffff;
+      --muted:#b6bdd1;
+      --glow:#8b5cf6;
+      --pink:#ec4899;
+      --cyan:#22d3ee;
+      --border:rgba(255,255,255,0.12);
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      overflow-x:hidden;
+      color:var(--text);
+      scroll-behavior:smooth;
+    }
+
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      background:
+      radial-gradient(circle at top left,rgba(139,92,246,.25),transparent 25%),
+      radial-gradient(circle at bottom right,rgba(236,72,153,.18),transparent 25%),
+      radial-gradient(circle at center,rgba(34,211,238,.08),transparent 40%);
+      z-index:-3;
+    }
+
+    canvas{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+    }
+
+    .noise{
+      position:fixed;
+      inset:0;
+      background-image:url('https://grainy-gradients.vercel.app/noise.svg');
+      opacity:.04;
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    section{
+      min-height:100vh;
+      padding:80px 10%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    .glass{
+      background:var(--card);
+      border:1px solid var(--border);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      border-radius:28px;
+      box-shadow:
+      0 0 40px rgba(139,92,246,.15),
+      0 0 100px rgba(236,72,153,.08);
+    }
+
+    .hero{
+      flex-direction:column;
+      text-align:center;
+      gap:25px;
+    }
+
+    .badge{
+      padding:10px 22px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.1);
+      font-size:.9rem;
+      letter-spacing:1px;
+      animation:float 4s ease-in-out infinite;
+    }
+
+    .hero h1{
+      font-size:clamp(3rem,8vw,7rem);
+      line-height:1;
+      background:linear-gradient(90deg,#fff,#c4b5fd,#f9a8d4,#fff);
+      -webkit-background-clip:text;
+      color:transparent;
+      text-shadow:0 0 40px rgba(255,255,255,.12);
+      animation:fadeUp 1.2s ease;
+    }
+
+    .hero h2{
+      font-family:'Great Vibes',cursive;
+      font-size:clamp(2rem,5vw,4rem);
+      color:#f9a8d4;
+      animation:fadeUp 1.5s ease;
+    }
+
+    .hero p{
+      max-width:760px;
+      color:var(--muted);
+      font-size:1.1rem;
+      line-height:1.9;
+      animation:fadeUp 1.8s ease;
+    }
+
+    .btns{
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:10px;
+    }
+
+    .btn{
+      padding:16px 30px;
+      border-radius:18px;
+      border:none;
+      font-size:1rem;
+      cursor:pointer;
+      transition:.35s;
+      font-weight:600;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .primary{
+      background:linear-gradient(135deg,var(--glow),var(--pink));
+      color:white;
+      box-shadow:0 0 30px rgba(236,72,153,.4);
+    }
+
+    .secondary{
+      background:rgba(255,255,255,.08);
+      color:white;
+      border:1px solid rgba(255,255,255,.1);
+    }
+
+    .btn:hover{
+      transform:translateY(-5px) scale(1.03);
+    }
+
+    .timeline{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:30px;
+      width:100%;
+    }
+
+    .card{
+      padding:35px;
+      transition:.5s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:'';
+      position:absolute;
+      width:200px;
+      height:200px;
+      background:radial-gradient(circle,rgba(139,92,246,.25),transparent 70%);
+      top:-100px;
+      right:-100px;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+      box-shadow:0 0 50px rgba(139,92,246,.2);
+    }
+
+    .card h3{
+      margin-bottom:15px;
+      font-size:1.4rem;
+    }
+
+    .card p{
+      color:var(--muted);
+      line-height:1.8;
+    }
+
+    .title{
+      text-align:center;
+      margin-bottom:60px;
+    }
+
+    .title h2{
+      font-size:clamp(2.2rem,5vw,4rem);
+      margin-bottom:15px;
+    }
+
+    .title p{
+      color:var(--muted);
+      max-width:700px;
+      margin:auto;
+      line-height:1.8;
+    }
+
+    .memory-wall{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:25px;
+      width:100%;
+    }
+
+    .memory{
+      aspect-ratio:1/1.2;
+      position:relative;
+      overflow:hidden;
+      border-radius:24px;
+      background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      transition:.5s;
+    }
+
+    .memory:hover{
+      transform:scale(1.03) rotate(-1deg);
+    }
+
+    .memory img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:.75;
+    }
+
+    .memory .overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top,#050816,transparent 60%);
+      display:flex;
+      align-items:flex-end;
+      padding:25px;
+      font-size:1.1rem;
+      font-weight:600;
+    }
+
+    .letter{
+      max-width:950px;
+      padding:60px;
+      line-height:2;
+      font-size:1.1rem;
+    }
+
+    .letter h2{
+      font-family:'Great Vibes',cursive;
+      font-size:4rem;
+      margin-bottom:25px;
+      color:#f9a8d4;
+    }
+
+    .letter p{
+      color:#d7dced;
+      margin-bottom:20px;
+    }
+
+    .final{
+      text-align:center;
+      flex-direction:column;
+      gap:25px;
+    }
+
+    .final h1{
+      font-size:clamp(3rem,8vw,6rem);
+      background:linear-gradient(90deg,#fff,#f9a8d4,#c4b5fd,#fff);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+
+    .final p{
+      color:var(--muted);
+      max-width:700px;
+      line-height:1.9;
+      font-size:1.1rem;
+    }
+
+    .floating-hearts span{
+      position:absolute;
+      bottom:-50px;
+      color:rgba(255,255,255,.15);
+      animation:rise linear infinite;
+      font-size:1.5rem;
+    }
+
+    @keyframes rise{
+      from{
+        transform:translateY(0) scale(1);
+        opacity:0;
+      }
+      20%{
+        opacity:1;
+      }
+      to{
+        transform:translateY(-120vh) scale(1.8);
+        opacity:0;
+      }
+    }
+
+    @keyframes fadeUp{
+      from{
+        opacity:0;
+        transform:translateY(50px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+    }
+
+    .music-btn{
+      position:fixed;
+      right:25px;
+      bottom:25px;
+      width:65px;
+      height:65px;
+      border-radius:50%;
+      border:none;
+      background:linear-gradient(135deg,var(--pink),var(--glow));
+      color:white;
+      font-size:1.4rem;
+      cursor:pointer;
+      z-index:100;
+      box-shadow:0 0 30px rgba(236,72,153,.45);
+      transition:.35s;
+    }
+
+    .music-btn:hover{
+      transform:scale(1.08) rotate(8deg);
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(60px);
+      transition:1s;
+    }
+
+    .reveal.active{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media(max-width:768px){
+      section{
+        padding:70px 6%;
+      }
+
+      .letter{
+        padding:35px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="stars"></canvas>
+  <div class="noise"></div>
+
+  <div class="floating-hearts">
+    <span style="left:5%;animation-duration:10s;">❤</span>
+    <span style="left:15%;animation-duration:15s;">✨</span>
+    <span style="left:28%;animation-duration:12s;">❤</span>
+    <span style="left:40%;animation-duration:18s;">✨</span>
+    <span style="left:55%;animation-duration:11s;">❤</span>
+    <span style="left:70%;animation-duration:16s;">✨</span>
+    <span style="left:82%;animation-duration:13s;">❤</span>
+    <span style="left:92%;animation-duration:20s;">✨</span>
+  </div>
+
+  <section class="hero">
+    <div class="badge glass">✨ A Special Day • A Special Soul ✨</div>
+
+    <h1>Happy Birthday</h1>
+    <h2>My Favorite Person</h2>
+
+    <p>
+      Some people walk into our lives quietly and somehow become the most beautiful part of it.
+      Today is about celebrating you — your smile, your energy, your heart, and every little thing
+      that makes you unforgettable.
+    </p>
+
+    <div class="btns">
+      <button class="btn primary" onclick="scrollToSection('journey')">Start The Journey</button>
+      <button class="btn secondary" onclick="launchConfetti()">Celebrate ✨</button>
+    </div>
+  </section>
+
+  <section id="journey">
+    <div style="width:100%;">
+      <div class="title reveal">
+        <h2>Moments That Matter</h2>
+        <p>
+          Every conversation, every laugh, every tiny memory somehow became important.
+          This page is a little collection of emotions turned into art.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="card glass reveal">
+          <h3>🌙 Late Night Talks</h3>
+          <p>
+            The kind of conversations that make hours feel like minutes.
+            The comfort, the chaos, the random jokes — all unforgettable.
+          </p>
+        </div>
+
+        <div class="card glass reveal">
+          <h3>✨ Your Smile</h3>
+          <p>
+            Some smiles are pretty.
+            Yours feels like peace.
+          </p>
+        </div>
+
+        <div class="card glass reveal">
+          <h3>💫 The Energy You Bring</h3>
+          <p>
+            You make ordinary moments feel cinematic.
+            That's rare.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="width:100%;">
+      <div class="title reveal">
+        <h2>Memory Wall</h2>
+        <p>
+          Replace these demo images with your favorite photos together.
+        </p>
+      </div>
+
+      <div class="memory-wall">
+        <div class="memory reveal">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200&auto=format&fit=crop" alt="memory">
+          <div class="overlay">The Beginning ✨</div>
+        </div>
+
+        <div class="memory reveal">
+          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop" alt="memory">
+          <div class="overlay">Your Smile 🌸</div>
+        </div>
+
+        <div class="memory reveal">
+          <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?q=80&w=1200&auto=format&fit=crop" alt="memory">
+          <div class="overlay">Golden Memories 💖</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="letter glass reveal">
+      <h2>To You,</h2>
+
+      <p>
+        I just wanted this day to feel different for you.
+        Not just another birthday message lost between notifications,
+        but something personal — something you can actually feel.
+      </p>
+
+      <p>
+        You deserve happiness that stays.
+        Peace that feels real.
+        Dreams that finally happen.
+        And people who genuinely care about you.
+      </p>
+
+      <p>
+        Thank you for existing exactly the way you do.
+        Thank you for every memory, every smile, every tiny moment that somehow became important.
+      </p>
+
+      <p>
+        No matter where life goes from here,
+        I hope this birthday becomes one of your favorite memories.
+      </p>
+
+      <p>
+        Happy Birthday ❤️
+      </p>
+    </div>
+  </section>
+
+  <section class="final">
+    <h1>Make A Wish ✨</h1>
+
+    <p>
+      And remember — somewhere in this world,
+      there is someone smiling today simply because you exist.
+    </p>
+
+    <button class="btn primary" onclick="launchConfetti()">
+      One More Celebration 🎉
+    </button>
+  </section>
+
+  <button class="music-btn" onclick="toggleMusic()">🎵</button>
+
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8d6c59d53.mp3?filename=beautiful-piano-ambient-110624.mp3" type="audio/mp3">
+  </audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+
+    window.addEventListener('scroll',()=>{
+      reveals.forEach(el=>{
+        const top = el.getBoundingClientRect().top;
+
+        if(top < window.innerHeight - 100){
+          el.classList.add('active');
+        }
+      });
+    });
+
+    function scrollToSection(id){
+      document.getElementById(id).scrollIntoView({
+        behavior:'smooth'
+      });
+    }
+
+    function launchConfetti(){
+      confetti({
+        particleCount:160,
+        spread:120,
+        origin:{y:.6}
+      });
+    }
+
+    const music = document.getElementById('bgMusic');
+    let playing = false;
+
+    function toggleMusic(){
+      if(!playing){
+        music.play();
+        playing = true;
+      }else{
+        music.pause();
+        playing = false;
+      }
+    }
+
+    // STAR BACKGROUND
+
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let stars = [];
+
+    for(let i=0;i<160;i++){
+      stars.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        radius:Math.random()*1.5,
+        speed:Math.random()*0.3
+      });
+    }
+
+    function drawStars(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      ctx.fillStyle='white';
+
+      stars.forEach(star=>{
+        ctx.beginPath();
+        ctx.arc(star.x,star.y,star.radius,0,Math.PI*2);
+        ctx.fill();
+
+        star.y += star.speed;
+
+        if(star.y > canvas.height){
+          star.y = 0;
+          star.x = Math.random()*canvas.width;
+        }
+      });
+
+      requestAnimationFrame(drawStars);
+    }
+
+    drawStars();
+
+    window.addEventListener('resize',()=>{
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // AUTO CONFETTI
+
+    setTimeout(()=>{
+      launchConfetti();
+    },1500);
+  </script>
+
+</body>
+</html>
+```
